@@ -1,6 +1,7 @@
 import Home from './Page/Home';
 import Signin from './Page/Signin';
 import Signup from './Page/Signup';
+import './App.scss';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
 function App() {
