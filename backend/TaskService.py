@@ -5,6 +5,7 @@ import pymysql
 connection = pymysql.connect(
     host="localhost",
     user="root",
+    port=3307,
     password="",
     database="todoapp"
 )

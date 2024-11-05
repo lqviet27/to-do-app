@@ -1,7 +1,6 @@
 
 from flask import Flask, request
 from TaskService import TaskVM, TaskService
-
 app = Flask(__name__)
 
 task_service = TaskService()
