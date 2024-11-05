@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from Model.UserVM import UserVM
 from UserService import UserService
 from  Model.LoginRequest import LoginRequest
+from Model.UserVM import UserVM
 app = Flask(__name__)
 
 user_service = UserService()
