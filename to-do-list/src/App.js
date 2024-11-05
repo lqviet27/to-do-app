@@ -1,3 +1,4 @@
+import Home from './Page/Home';
 import Signin from './Page/Signin';
 import Signup from './Page/Signup';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -8,9 +9,9 @@ function App() {
             <Routes>
                 <Route path="/signin" element={<Signin />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="*" element={<Navigate to="/signin" />} />
+                <Route path="/" element={<Home />} />
+                {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
             </Routes>
-
 
             <ToastContainer
                 position="top-center"
