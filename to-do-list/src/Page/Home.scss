@@ -1,0 +1,129 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.home-container {
+    .home-content {
+        .home-task {
+            width: 100%;
+            .task-card {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                // padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                background-color: #fff;
+                margin-bottom: 12px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+                .task-card__checkbox-container {
+                    cursor: pointer;
+                }
+
+                .task-card__checkbox {
+                    width: 24px;
+                    height: 24px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                    margin-left: 30px;
+
+                    .task-card__checkbox--done {
+                        background-color: #7f56da;
+                    }
+
+                    .task-card__checkbox-inner {
+                        width: 20px;
+                        height: 20px;
+                        background: #7f56da;
+                        border-radius: 50%;
+                    }
+                }
+
+                .task-card__content {
+                    flex-grow: 1;
+                    margin-left: 12px;
+
+                    .task-card__title {
+                        margin: 0 0 4px;
+                        font-size: 18px;
+
+                        .task-card__title--done {
+                            color: #aaa;
+                            text-decoration: line-through;
+                        }
+                    }
+
+                    .task-card__details {
+                        display: flex;
+                        align-items: center;
+
+                        .task-card__color-indicator {
+                            width: 16px;
+                            height: 16px;
+                            border-radius: 20px;
+                            margin-right: 10px;
+                        }
+
+                        .task-card__list-name {
+                            font-size: 16px;
+                            color: #888;
+                            margin: 0;
+                        }
+                    }
+                }
+
+                .task-card__actions {
+                    display: flex;
+                    align-items: center;
+
+                    .task-card__edit-icon,
+                    .task-card__delete-icon {
+                        cursor: pointer;
+                        margin: 10px;
+                        padding: 10px;
+                    }
+                }
+            }
+
+            .add-task {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #6c757d; // Màu viền tương tự "border-secondary"
+                border-radius: 8px;
+                // padding: 12px;
+                // margin: 8px;
+                height: 50px;
+                width: 100vh;
+                transition: background 0.3s;
+
+                &:hover {
+                    background: #f0f0f0;
+                }
+
+                .add-task__icon {
+                    font-size: 24px;
+                    color: #6c757d; // Màu xám
+                    margin-right: 8px;
+                }
+
+                .add-task__text {
+                    font-size: 1.25rem; // Tương đương "fs-4"
+                    color: #6c757d;
+                    font-weight: 400;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
