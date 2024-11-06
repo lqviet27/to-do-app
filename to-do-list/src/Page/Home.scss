@@ -3,12 +3,27 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100%;
     width: 100%;
 }
 
 .home-container {
     .home-content {
+        height: 100vh;
+        width: 82vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        // overflow-y: scroll;
+
+        .home-header {
+            font-size: 40px;
+            font-weight: 400;
+            color: #555;
+            margin: 16px;
+        }
+
         .home-task {
             width: 100%;
             .task-card {
@@ -104,7 +119,7 @@
                 // padding: 12px;
                 // margin: 8px;
                 height: 50px;
-                width: 100vh;
+                width: 100%;
                 transition: background 0.3s;
 
                 &:hover {

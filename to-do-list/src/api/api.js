@@ -15,5 +15,6 @@ export const authApi = {
 }
 
 export const taskApi = {
-    getTasks : () => api.get('/api/tasks'),
+    // getTasks : (data) => api.get('/tasks', data),
+    getTasks: (data) => api.get('/tasks', { params: data }), 
 }
