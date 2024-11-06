@@ -35,12 +35,6 @@ def create_task_endpoint():
 
 @app.route('/tasks', methods=['GET'])
 def get_tasks_endpoint():
-    # data = request.get_json()
-    # tasks = task_service.get_tasks(data['id_user'])
-    #
-    # tasks_dict = [task.to_dict() for task in tasks]
-    #
-    # return jsonify(tasks_dict), 200
     id_user = request.args.get('id_user')  # Lấy id_user từ query parameters
     if not id_user:
         return jsonify({"error": "id_user is required"}), 400  # Kiểm tra id_user có tồn tại không
