@@ -1,11 +1,14 @@
-import subprocess
+from flask import Flask
+from Category_Api import category_api
+from Task_Api import task_api
+from User_Api import user_api
 
-# Danh sách các file cần chạy
-files_to_run = ['backend\\Category_Api.py', 'backend\\Task_Api.py', 'backend\\User_Api.py']
+app = Flask(__name__)
 
-# Chạy từng file đồng thời
-processes = [subprocess.Popen(['python', file]) for file in files_to_run]
+# Đăng ký các Blueprint
+app.register_blueprint(category_api)
+app.register_blueprint(task_api)
+app.register_blueprint(user_api)
 
-# Đợi tất cả các file hoàn thành
-for process in processes:
-    process.wait()
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
