@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from TaskService import TaskService
 from Model.TaskVM import TaskVM
-from flask_cors import CORS
 
 task_api = Blueprint('task_api', __name__)
 
@@ -34,7 +33,9 @@ def get_tasks_endpoint():
     id_user = request.args.get('id_user')
     if not id_user:
         return jsonify({"error": "id_user is required"}), 400
-
     tasks = task_service.get_tasks(id_user)
-    tasks_dict = [task.to_dict() for task in tasks]
-    return jsonify(tasks_dict), 200
+    if isinstance(tasks, str):
+        return jsonify({"error": tasks}), 500
+    else:
+        tasks_dict = [task.to_dict() for task in tasks]
+        return jsonify(tasks_dict), 201

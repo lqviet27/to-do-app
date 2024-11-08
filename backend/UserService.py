@@ -7,7 +7,8 @@ connection = pymysql.connect(
     user="root",
     port=3306,
     password="",
-    database="todoapp"
+    database="todoapp",
+    autocommit=True
 )
 
 class UserService:
