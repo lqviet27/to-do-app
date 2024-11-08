@@ -1,10 +1,11 @@
 from flask import jsonify, Flask
-from models import Category
+from Model.CategoryVM import CategoryVM
 import pymysql
 
 connection = pymysql.connect(
     host="localhost",
     user="root",
+    port = 3306,
     password="",
     database="todoapp"
 )
@@ -16,7 +17,7 @@ class CategoryService:
         # Initialize your user service
         pass
     
-    def create_category(self, category: Category):
+    def create_category(self, category: CategoryVM):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
@@ -37,7 +38,7 @@ class CategoryService:
                 categories = cursor.fetchall()
                 category_list = []
                 for category in categories:
-                    newcategory = Category(category[1], category[2])
+                    newcategory = CategoryVM(category[1], category[2])
                     category_list.append(newcategory)
 
             return jsonify(category_list), 200

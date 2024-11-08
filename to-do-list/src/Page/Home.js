@@ -1,7 +1,24 @@
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Input from './Input';
+import Input from '../components/Input';
+import TaskCard from '../components/TaskCard';
+import { API_URL } from '../api/api';
+import AddTask from '../components/AddTask';
+import './Home.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTasks } from '../redux/actions/taskAction';
+import { useEffect } from 'react';
+console.log(API_URL);
 const Home = () => {
+    const dispatch = useDispatch();
+    const currentTasks = useSelector((state) => state.task.tasks);
+    useEffect(() => {
+        const fetchData = async () => {
+            const fetchedTasks = await dispatch(fetchTasks({ id_user: 3 }));
+            console.log(fetchedTasks);
+        };
+        fetchData();
+    }, []);
     let data = [
         {
             id: 1,
@@ -28,36 +45,19 @@ const Home = () => {
             username: '@twitter',
         },
     ];
+
     return (
-        <div>
-            <Input />
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item) => {
-                        return (
-                            <tr key={item.id}>
-                                <td>{item.id}</td>
-                                <td>{item.firstName}</td>
-                                <td>{item.lastName}</td>
-                                <td>{item.username}</td>
-                                <td>
-                                    <button className="btn btn-primary mx-1">Edit</button>
-                                    <button className="btn btn-primary mx-1">Delete</button>
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </Table>
+        <div className="home-container">
+            {/* <div className="home-slidebar"></div> */}
+            <div className="home-content">
+                <div className="home-header">All your task</div>
+                <div className="home-task">
+                    {currentTasks.map((task) => (
+                        <TaskCard id={task.id} name={task.title} list={task.description} />
+                    ))}
+                    <AddTask />
+                </div>
+            </div>
         </div>
     );
 };
