@@ -5,9 +5,10 @@ import pymysql
 connection = pymysql.connect(
     host="localhost",
     user="root",
-    port = 3307,
+    port = 3306,
     password="",
-    database="todoapp"
+    database="todoapp",
+    autocommit=True
 )
 
 app = Flask(__name__)

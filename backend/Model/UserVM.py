@@ -1,8 +1,9 @@
 import hashlib
 
 class UserVM:
-    def __init__(self, name, password):
-        self.name = name
+    def __init__(self, email, username, password):
+        self.email = email
+        self.username = username
         self.password = UserVM.hash_password(password)
 
     @staticmethod
@@ -12,3 +13,7 @@ class UserVM:
     def check_password(self, password):
         return self.password == UserVM.hash_password(password)
 
+class LoginRequest:
+    def __init__(self, email, password):
+        self.email =  email
+        self.password = password
