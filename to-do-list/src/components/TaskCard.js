@@ -1,24 +1,22 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaPen } from 'react-icons/fa';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
+import { taskApi } from '../api/api';
 
-const TaskCard = ({ id, name, list, color, done }) => {
-    color = 'red';
-    // const { setShowDelete, setId } = useContext();
-    // const { checkTask } = useContext();
+const TaskCard = ({ id, name, list, color, done, fetchTasks }) => {
 
-    function handleCheck() {
-        // checkTask(id);
+
+    const handleCheck = async () => {
+        const res = await taskApi.toggleTaskStatus(id);
+        console.log(res.data);
+        await fetchTasks();
     }
 
     function handleDelete() {
-        // setShowDelete(true);
-        // setId(id);
     }
     return (
         <div className="task-card">
             <div className="task-card__checkbox-container" onClick={handleCheck}>
-                {/* <input type="checkbox" className="task-card__checkbox-input" checked={done} readOnly /> */}
                 <div className={`task-card__checkbox ${done ? 'task-card__checkbox--done' : ''}`}>
                     {done && <div className="task-card__checkbox-inner" />}
                 </div>

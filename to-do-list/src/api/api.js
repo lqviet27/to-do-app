@@ -16,5 +16,12 @@ export const authApi = {
 
 export const taskApi = {
     // getTasks : (data) => api.get('/tasks', data),
-    getTasks: (data) => api.get('/tasks', { params: data }), 
+    // getTasks: (data) => api.get('/tasks', { params: data }), 
+    getTasks: (userId) => api.get(`/tasks/user/${userId}`), 
+    createTask: (data) => api.post('/tasks/create', data),
+    toggleTaskStatus: (taskId) => api.put(`/tasks/toggle/${taskId}`),
+}
+
+export const categoryApi = {
+    getCategories: (userId) => api.get(`/categories/user/${userId}`),
 }

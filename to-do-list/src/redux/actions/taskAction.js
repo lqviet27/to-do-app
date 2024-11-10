@@ -2,10 +2,9 @@ import { taskApi } from "../../api/api";
 
 export const SET_TASKS = 'SET_TASKS';
 
-export const fetchTasks = (data) => async (dispatch) => {
+export const fetchTasks = (userId) => async (dispatch) => {
     try {
-        const response = await taskApi.getTasks(data);
-        // console.log(response.data);
+        const response = await taskApi.getTasks(userId);
         dispatch({
             type: SET_TASKS,
             payload: response.data,

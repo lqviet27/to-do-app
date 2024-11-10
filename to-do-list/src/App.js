@@ -4,6 +4,8 @@ import Signup from './Page/Signup';
 import './App.scss';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
     return (
         <BrowserRouter>

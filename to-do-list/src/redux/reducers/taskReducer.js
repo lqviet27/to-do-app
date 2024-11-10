@@ -1,4 +1,3 @@
-import { GrTasks } from 'react-icons/gr';
 import { SET_TASKS } from '../actions/taskAction';
 
 const initialState = {
