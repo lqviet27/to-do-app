@@ -1,48 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import { taskApi } from '../api/api';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
-
-const AddModal = ({ show, setShow, listCate, fetchListTasks }) => {
-    const user = useSelector((state) => state.auth.user);
+const EditTaskModal = ({ show, setShow, task, listCate, fetchListTasks }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [category, setCategory] = useState(null);
-    const handleClose = () => {
-        setTitle('');
-        setDescription('');
-        setCategory('');
-        setShow(false);
-    };
+    const [category, setCategory] = useState('');
 
-    const handleSubmitCreateTask = async () => {
-        console.log(title, description, category);
+    useEffect(() => {
+        if (task) {
+            setTitle(task.title);
+            setDescription(task.description);
+            setCategory(task.category_id);
+        }
+    }, [task]);
+
+    const handleSubmitEditTask = async () => {
         const data = {
             title: title,
             description: description,
-            category_id: category ? category : null,
-            user_id: user.id,
+            category_id: category,
         };
-        const res = await taskApi.createTask(data);
-        console.log(res);
-        if (res.status === 201) {
-            toast.success('Create task successfully');
-            fetchListTasks(user.id);
-        }
-        handleClose();
+        const res = await taskApi.updateTask(task.id, data);
+        console.log(res.data);
+        toast.success('Update task successfully');
+        handleCloseEdit();
+        await fetchListTasks();
     };
-
+    const handleCloseEdit = () => {
+        setShow(false);
+    };
     return (
         <>
             <Modal
                 show={show}
-                onHide={handleClose}
+                onHide={handleCloseEdit}
                 animation={false}
                 size="xl"
                 backdrop="static"
-                className="modal-add-student"
             >
                 <Modal.Header closeButton>
                     <Modal.Title>Add new student</Modal.Title>
@@ -97,11 +92,11 @@ const AddModal = ({ show, setShow, listCate, fetchListTasks }) => {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <button className="btn btn-secondary" onClick={handleClose}>
+                    <button className="btn btn-secondary" onClick={handleCloseEdit}>
                         Close
                     </button>
-                    <button className="btn btn-primary" onClick={handleSubmitCreateTask}>
-                        Create
+                    <button className="btn btn-primary" onClick={handleSubmitEditTask}>
+                        Save
                     </button>
                 </Modal.Footer>
             </Modal>
@@ -109,4 +104,4 @@ const AddModal = ({ show, setShow, listCate, fetchListTasks }) => {
     );
 };
 
-export default AddModal;
+export default EditTaskModal;

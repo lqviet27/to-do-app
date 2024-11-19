@@ -5,6 +5,8 @@ import './App.scss';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import PrivateRoute from './routes/PrivateRoute';
+
 
 function App() {
     return (
@@ -12,7 +14,14 @@ function App() {
             <Routes>
                 <Route path="/signin" element={<Signin />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/" element={<Home />} />
+                <Route 
+                    path="/" 
+                    element={
+                    <PrivateRoute>
+                        <Home/>
+                    </PrivateRoute>
+                    } 
+                />
                 {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
             </Routes>
 

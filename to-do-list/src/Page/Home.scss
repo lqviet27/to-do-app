@@ -36,8 +36,44 @@
             height: 60vh;
             gap: 8px;
 
+            .slidebar-item {
+                width: 150%;
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, color 0.3s ease;
+
+                &:hover {
+                    background-color: #f0f0f0;
+                }
+
+                &.active {
+                    background-color: #f0f0f0;
+                    color: #007bff;
+
+                    .icon {
+                        color: #007bff;
+                    }
+                }
+
+                .icon {
+                    margin-right: 8px;
+                    font-size: 1.2em;
+                }
+
+                .name {
+                    margin: 0;
+                    font-size: 1.1em;
+                }
+            }
+
             .expand-slidebar-item {
                 width: 100%;
+                &:hover {
+                    background-color: #f0f0f0;
+                }
                 .header {
                     display: flex;
                     align-items: center;
@@ -48,6 +84,11 @@
 
                     &.active {
                         background-color: #f0f0f0;
+                        color: #007bff;
+
+                        .icon {
+                            color: #007bff;
+                        }
                     }
 
                     .icon {
@@ -80,20 +121,29 @@
                         cursor: pointer;
 
                         .add-icon {
-                            margin-right: 5px;
+                            font-size: 1.3em;
+                            margin-right: 25px;
                         }
 
                         span {
-                            font-size: 0.9em;
+                            font-size: 1.1em;
                         }
                     }
 
                     .category-item-containner {
                         height: 20px;
-                        margin: 4px 0 4px 10px;
+                        margin: 5px 0 5px 10px;
                         display: flex;
                         align-items: center;
                         background: #f5f5f5;
+                        padding: 5px 15px;
+                        max-width: 100%; // giới hạn chiều rộng tối đa để tránh tràn
+                        border-radius: 4px;
+
+                        &:hover {
+                            background: #ffdada;
+                            cursor: pointer;
+                        }
 
                         .category-item-containner__color {
                             height: 14px;
@@ -102,10 +152,14 @@
                         }
 
                         .category-item-containner__content {
-                            font-size: 17px;
+                            font-size: 18px;
                             color: #777;
                             margin-left: 8px;
                             font-weight: 400;
+                        }
+
+                        .category-item-container__options {
+                            margin-left: auto;
                         }
                     }
                 }
@@ -120,6 +174,7 @@
                         height: 30px;
                         border: none;
                         margin-right: 10px;
+                        border-radius: 10px;
                     }
 
                     .name-input input {
@@ -140,6 +195,51 @@
                             color: darkgreen;
                         }
                     }
+
+                    .submit-icon.disabled {
+                        color: gray;
+                        opacity: 0.5;
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+
+        .home-slidebar__footer {
+            width: 100%;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            
+            .text {
+                font-size: 1.1em;
+                color: #777;
+            }
+
+            .logout-item {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, color 0.3s ease;
+
+                &:hover {
+                    background-color: #f0f0f0;
+                }
+
+                .icon {
+                    margin-right: 8px;
+                    font-size: 1.2em;
+                }
+
+                .name {
+                    margin: 0;
+                    font-size: 1.1em;
                 }
             }
         }
@@ -159,6 +259,68 @@
             font-weight: 400;
             color: #555;
             margin: 16px;
+        }
+
+        .home-filterBar {
+            height: 20px;
+            width: 70vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0 12px 0;
+
+            .home-filterBar__title {
+                font-size: 24px;
+                color: #555;
+                cursor: pointer;
+            }
+
+            .home-filterBar__filterField {
+                height: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                > div {
+                    margin: 0 4px; // Add spacing between filter tags
+                }
+
+                .filter-tag {
+                    width: 80px;
+                    height: 24px;
+                    border-radius: 8px;
+                    border: 1px solid #ccc;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 2px;
+                    padding: 14px 0;
+
+                    &:hover {
+                        cursor: pointer;
+                        background: #eee;
+                    }
+
+                    &.active {
+                        background: white;
+                        border: 0;
+                        box-shadow: 0 1px 2px #ccc;
+                    }
+
+                    .filter-tag-name {
+                        font-size: 16px;
+                        color: #ccc;
+
+                        &.active {
+                            color: #333;
+                        }
+                    }
+                }
+                .icon {
+                    height: 27px;
+                    margin: 0 8px;
+                }
+            }
         }
 
         .home-task {
@@ -208,8 +370,10 @@
                     .task-card__title {
                         margin: 0 0 4px;
                         font-size: 18px;
+                        padding-top: 8px;
+                        padding-bottom: 3px;
 
-                        .task-card__title--done {
+                        &.task-card__title--done {
                             color: #aaa;
                             text-decoration: line-through;
                         }
@@ -217,19 +381,77 @@
 
                     .task-card__details {
                         display: flex;
-                        align-items: center;
+                        // align-items: center;
+                        flex-direction: column;
+                        align-items: start;
 
-                        .task-card__color-indicator {
-                            width: 16px;
-                            height: 16px;
-                            border-radius: 20px;
-                            margin-right: 10px;
+                        .task-card__description-box {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            width: 100%;
+                            margin-bottom: 8px;
+                            background-color: #f9f9f9;
+                            border-radius: 4px;
+                            position: relative;
+
+                            .task-card__description {
+                                font-size: 14px;
+                                color: #555;
+                                margin: 0;
+                                transition: all 0.3s ease;
+
+                                &.task-card__description--done {
+                                    filter: blur(1px);
+                                    opacity: 1;
+                                    pointer-events: none;
+
+                                    &:before {
+                                        content: '';
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        background-color: rgba(255, 255, 255, 0.8);
+                                        border-radius: 4px;
+                                        z-index: 1;
+                                    }
+                                }
+                            }
+
+                            .task-card__done-label {
+                                position: absolute;
+                                top: 50%;
+                                right: 16px;
+                                transform: translateY(-50%);
+                                font-size: 12px;
+                                font-weight: bold;
+                                color: #28a745;
+                                background: #e9ffe6;
+                                padding: 2px 6px;
+                                border-radius: 12px;
+                                box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+                                z-index: 2;
+                            }
                         }
 
-                        .task-card__list-name {
-                            font-size: 16px;
-                            color: #888;
-                            margin: 0;
+                        .task-card__info {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            padding-bottom: 4px;
+                            .task-card__color-indicator {
+                                width: 16px;
+                                height: 16px;
+                                border-radius: 20px;
+                                margin-right: 10px;
+                            }
+
+                            .task-card__list-name {
+                                font-size: 16px;
+                                color: #888;
+                                margin: 0;
+                            }
                         }
                     }
                 }
@@ -251,10 +473,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border: 1px solid #6c757d; // Màu viền tương tự "border-secondary"
+                border: 1px solid #6c757d;
                 border-radius: 8px;
-                // padding: 12px;
-                // margin: 8px;
                 height: 50px;
                 width: 100%;
                 transition: background 0.3s;
@@ -266,12 +486,12 @@
 
                 .add-task__icon {
                     font-size: 24px;
-                    color: #6c757d; // Màu xám
+                    color: #6c757d;
                     margin-right: 8px;
                 }
 
                 .add-task__text {
-                    font-size: 1.25rem; // Tương đương "fs-4"
+                    font-size: 1.25rem;
                     color: #6c757d;
                     font-weight: 400;
                     margin: 0;

@@ -10,18 +10,22 @@ const api = axios.create({
 })
 
 export const authApi = {
-    singIn: (data) => api.post('/auth/signin', data),
-    signUp: (data) => api.post('/auth/signup', data),
+    logIn: (data) => api.post('/auth/login', data),
+    signUp: (data) => api.post('/auth/register', data),
 }
 
 export const taskApi = {
-    // getTasks : (data) => api.get('/tasks', data),
-    // getTasks: (data) => api.get('/tasks', { params: data }), 
     getTasks: (userId) => api.get(`/tasks/user/${userId}`), 
+    getTasksByCategory: (cateId) => api.get(`/tasks/category/${cateId}`),
     createTask: (data) => api.post('/tasks/create', data),
     toggleTaskStatus: (taskId) => api.put(`/tasks/toggle/${taskId}`),
+    updateTask: (taskId, data) => api.put(`/tasks/update/${taskId}`, data),
+    deleteTask: (taskId) => api.delete(`/tasks/delete/${taskId}`),
 }
 
 export const categoryApi = {
     getCategories: (userId) => api.get(`/categories/user/${userId}`),
+    createCategory: (data) => api.post('/categories/create', data),
+    updateCategory: (cateId, data) => api.put(`/categories/update/${cateId}`, data),
+    deleteCategory: (cateId) => api.delete(`/categories/delete/${cateId}`),
 }

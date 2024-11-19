@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
-const SlidebarItem = ({ name, Icon, isActive = false }) => {
+const SlidebarItem = ({ name, Icon, isActive = false, action }) => {
+
+    useEffect(()=>{
+        if(isActive && action){
+            action();
+        }
+    },[isActive])
+    
     return (
-        <div className={`d-flex align-items-center p-2 rounded ${isActive ? 'bg-light text-primary' : ''}`}>
-            {/* <img src={icon} alt={`${name} icon`} className="me-2" /> */}
-            {Icon && <Icon className="me-2" />}
-            <h5 className="mb-0">{name}</h5>
+        <div className={`slidebar-item ${isActive ? 'active' : ''}`} onClick={action}>
+            {Icon && <Icon className="icon" />}
+            <   h5 className="name">{name}</h5>
         </div>
     );
 };
