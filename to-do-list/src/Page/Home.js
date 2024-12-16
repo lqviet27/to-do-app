@@ -40,9 +40,9 @@ const Home = () => {
     const [activeTaskFill, setActiveTaskFill] = useState(true);
     const [activeCategories, setActiveCategories] = useState(false);
 
+    const [notDoneActive, setNotDoneActive] = useState(true);
     const [allActive, setAllActive] = useState(false);
     const [doneActive, setDoneActive] = useState(false);
-    const [notDoneActive, setNotDoneActive] = useState(true);
 
     const [activeTogge, setActiveToggle] = useState(false);
 
@@ -62,14 +62,19 @@ const Home = () => {
         }
     }, [user]);
 
+    // useEffect(() => {
+    //     setListTasks(Tasks);
+    // }, [Tasks]);
     useEffect(() => {
-        setListTasks(Tasks);
+        if (notDoneActive) {
+            const notDoneTasks = Tasks.filter((task) => !task.is_done);
+            setListTasks(notDoneTasks);
+        } else {
+            setListTasks(Tasks);
+        }
     }, [Tasks]);
 
     useEffect(() => {
-        // if (!Array.isArray(listTasks) || !Array.isArray(categories)) return;
-        // if (!Array.isArray(listTasks)) return;
-
         const taskView = listTasks.map((task) => {
             const category = categories.find((cat) => cat.id === task.category_id);
 
@@ -80,14 +85,12 @@ const Home = () => {
             };
         });
 
-        // if (currentCate != null && categories != null) {
         if (currentCate != null && categories != null && Array.isArray(categories)) {
             setCurrentCate((prev) => {
                 if (!prev || !prev.id) return null; // Nếu `prev` hoặc `prev.id` không tồn tại, trả về null.
                 return categories.find((cat) => cat.id === prev.id) || null; // Nếu không tìm thấy, trả về null.
             });
         }
-
         setTasksView(taskView);
     }, [categories, listTasks]);
 
@@ -117,15 +120,16 @@ const Home = () => {
         setAllActive(true);
         setDoneActive(false);
         setNotDoneActive(false);
-        setListTasks(Tasks);
+        setTasksView(Tasks);
     };
 
     const handleDone = () => {
+        console.log('done>>>>>>');
         setAllActive(false);
         setDoneActive(true);
         setNotDoneActive(false);
         const doneTasks = Tasks.filter((task) => task.is_done === true);
-        setListTasks(doneTasks);
+        setTasksView(doneTasks);
     };
 
     const handleNotDone = () => {
@@ -133,14 +137,14 @@ const Home = () => {
         setDoneActive(false);
         setNotDoneActive(true);
         const notDoneTasks = Tasks.filter((task) => task.is_done === false);
-        setListTasks(notDoneTasks);
+        setTasksView(notDoneTasks);
     };
 
     const handleReset = () => {
-        console.log("reset>>>>>>>")
+        console.log('reset>>>>>>>');
+        setNotDoneActive(true);
         setAllActive(false);
         setDoneActive(false);
-        setNotDoneActive(true);
         setActiveTaskFill(true);
         setActiveCategories(false);
     };
@@ -177,7 +181,6 @@ const Home = () => {
                             name="Task fill"
                             Icon={FaTasks}
                             isActive={activeTaskFill}
-                            // action={fetchListTasks}
                             action={handleTaksFillAction}
                         />
                     </div>
@@ -212,11 +215,14 @@ const Home = () => {
                 }`}</div>
                 {activeTaskFill ? (
                     <div className="home-filterBar">
-                        <div className="home-filterBar__title">Tasks</div>
-                        <div className="add-task" onClick={() => setShowAddTask(true)}>
-                            <MdOutlineAddTask className="add-task__icon" />
-                            <p className="add-task__text">Add a task</p>
+                        <div className="home-filterBar__title">
+                            Tasks
+                            <div className="add-task" onClick={() => setShowAddTask(true)}>
+                                <MdOutlineAddTask className="add-task__icon" />
+                                {/* <p className="add-task__text"></p> */}
+                            </div>
                         </div>
+
                         <div className="home-filterBar__filterField">
                             <div onClick={handleNotDone}>
                                 <FilterTag name="Not Done" active={notDoneActive} />
