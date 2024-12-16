@@ -238,7 +238,7 @@
                 .icon {
                     margin-right: 8px;
                     font-size: 1.2em;
-                    line-height: 1; 
+                    line-height: 1;
                 }
 
                 .name {
@@ -329,9 +329,21 @@
         }
 
         .home-task {
+
             width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // Mặc định tự động chia cột
+            gap: 16px; // Khoảng cách giữa các Task Card
+            padding: 16px;
+
+            @media (min-width: 768px) {
+                // Khi màn hình lớn hơn 768px
+                grid-template-columns: repeat(2, 1fr); // Chỉ chia thành 2 cột
+            }
+            /*
             .task-card {
-                width: 40%;
+                // width: 40%;
+                width:  80%;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -470,6 +482,121 @@
                         cursor: pointer;
                         margin: 10px;
                         padding: 10px;
+                    }
+                }
+            }
+        */
+            .task-card {
+                width: 80%;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                background-color: #fff;
+                margin-bottom: 12px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+
+                &--expanded {
+                    max-height: 500px; // Kích thước lớn hơn khi mở
+                }
+
+                &:not(&--expanded) {
+                    max-height: 80px; // Hiển thị tiêu đề ban đầu
+                }
+
+                .task-card__header {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    padding: 12px;
+
+                    .task-card__checkbox-container {
+                        cursor: pointer;
+                        margin-right: 16px;
+                    }
+
+                    .task-card__checkbox {
+                        width: 24px;
+                        height: 24px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px solid #ccc;
+                        border-radius: 50%;
+                        margin-left: 30px;
+
+                        .task-card__checkbox--done {
+                            background-color: #7f56da;
+                        }
+
+                        .task-card__checkbox-inner {
+                            width: 20px;
+                            height: 20px;
+                            background: #7f56da;
+                            border-radius: 50%;
+                        }
+                    }
+
+                    .task-card__title {
+                        margin: 0;
+                        font-size: 18px;
+                        color: #333;
+
+                        &.task-card__title--done {
+                            color: #aaa;
+                            text-decoration: line-through;
+                        }
+                    }
+                }
+
+                .task-card__content {
+                    display: flex;
+                    flex-direction: column;
+                    padding: 12px;
+
+                    .task-card__details {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+
+                        .task-card__description-box {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            background-color: #f9f9f9;
+                            border-radius: 4px;
+                        }
+
+                        .task-card__info {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            .task-card__color-indicator {
+                                width: 16px;
+                                height: 16px;
+                                border-radius: 50%;
+                            }
+
+                            .task-card__list-name {
+                                font-size: 14px;
+                                color: #555;
+                            }
+                        }
+                    }
+
+                    .task-card__actions {
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 8px;
+
+                        .task-card__edit-icon,
+                        .task-card__delete-icon {
+                            cursor: pointer;
+                            padding: 4px;
+                        }
                     }
                 }
             }

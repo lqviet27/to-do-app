@@ -40,9 +40,9 @@ const Home = () => {
     const [activeTaskFill, setActiveTaskFill] = useState(true);
     const [activeCategories, setActiveCategories] = useState(false);
 
-    const [allActive, setAllActive] = useState(true);
+    const [allActive, setAllActive] = useState(false);
     const [doneActive, setDoneActive] = useState(false);
-    const [notDoneActive, setNotDoneActive] = useState(false);
+    const [notDoneActive, setNotDoneActive] = useState(true);
 
     const [activeTogge, setActiveToggle] = useState(false);
 
@@ -137,9 +137,10 @@ const Home = () => {
     };
 
     const handleReset = () => {
-        setAllActive(true);
+        console.log("reset>>>>>>>")
+        setAllActive(false);
         setDoneActive(false);
-        setNotDoneActive(false);
+        setNotDoneActive(true);
         setActiveTaskFill(true);
         setActiveCategories(false);
     };
