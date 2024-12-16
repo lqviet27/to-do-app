@@ -9,13 +9,13 @@ def get_tasks():
 def get_tasks_by_user(user_id):
     tasks = Task.query.filter_by(user_id=user_id).all()
     if not tasks:
-        return jsonify({"error": "No tasks found for this user"}), 404
+        return jsonify({"em": "No tasks found for this user", "ec": 1}), 200
     return jsonify([task.to_dict() for task in tasks]), 200
 
 def get_tasks_by_category(category_id):
     tasks = Task.query.filter_by(category_id=category_id).all()
     if not tasks:
-        return jsonify({"error": "No tasks found for this category", "ec": 1}), 200
+        return jsonify({"em": "No tasks found for this category", "ec": 1}), 200
     return jsonify([task.to_dict() for task in tasks]), 200
 def create_task(data):
     new_task = Task(

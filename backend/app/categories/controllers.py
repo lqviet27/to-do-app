@@ -9,7 +9,7 @@ def get_categories():
 def get_categories_by_user(user_id):
     categories = Category.query.filter_by(user_id=user_id).all()
     if not categories:
-        return jsonify({"error": "No categories found for this user"}), 404
+        return jsonify({"em": "No categories found for this user", "ec": 1}), 200
     return jsonify([category.to_dict() for category in categories]), 200
 
 def create_category(data):
