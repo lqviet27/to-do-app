@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { taskApi } from '../api/api';
@@ -10,6 +10,7 @@ const AddModal = ({ show, setShow, listCate, fetchListTasks }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState(null);
+
     const handleClose = () => {
         setTitle('');
         setDescription('');
@@ -17,7 +18,15 @@ const AddModal = ({ show, setShow, listCate, fetchListTasks }) => {
         setShow(false);
     };
 
+    useEffect(() => {
+        console.log(">>> RE-RENDER add modal")
+        if (listCate.length > 0) {
+            setCategory(listCate[0].id);
+        }
+    },[category, listCate]);
+
     const handleSubmitCreateTask = async () => {
+        console.log(">>> check 2 cataList", listCate);
         console.log(title, description, category);
         const data = {
             title: title,
@@ -85,12 +94,17 @@ const AddModal = ({ show, setShow, listCate, fetchListTasks }) => {
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                             >
-                                <option value="">Select category</option>
-                                {listCate.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>
-                                        {cat.name}
-                                    </option>
-                                ))}
+                                {listCate.length > 0 ? (
+                                    <></>
+                                ) : (
+                                    <option value="">None</option>
+                                )}
+                                {Array.isArray(listCate) &&
+                                    listCate.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
                             </select>
                         </div>
                     </form>

@@ -15,10 +15,12 @@ const ExpandSlidebarItem = ({
     fetchListCategories,
     setCurrentCate,
     fetchTaskByCate,
-    handleActiveCategories
+    handleActiveCategories,
+    activeTogge,
+    setActiveToggle
 }) => {
     const user = useSelector((state) => state.auth.user);
-    const [activeTogge, setActiveToggle] = useState(false);
+    // const [activeTogge, setActiveToggle] = useState(false);
     const [addNew, setAddNew] = useState(false);
     const [nameCate, setNameCate] = useState('');
     const [colorCate, setColorCate] = useState('');
@@ -64,7 +66,7 @@ const ExpandSlidebarItem = ({
 
             {activeTogge && (
                 <div className="content">
-                    {categList.map((cat) => (
+                    {Array.isArray(categList) && categList.map((cat) => (
                         <CategoryItem
                             key={cat.id}
                             cate={cat}

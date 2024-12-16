@@ -44,6 +44,8 @@ const Home = () => {
     const [doneActive, setDoneActive] = useState(false);
     const [notDoneActive, setNotDoneActive] = useState(false);
 
+    const [activeTogge, setActiveToggle] = useState(false);
+
     const fetchListTasks = async () => {
         await dispatch(fetchTasks(user.id));
         handleReset();
@@ -65,10 +67,12 @@ const Home = () => {
     }, [Tasks]);
 
     useEffect(() => {
-        if (!listTasks || !categories) return;
+        // if (!Array.isArray(listTasks) || !Array.isArray(categories)) return;
+        // if (!Array.isArray(listTasks)) return;
 
         const taskView = listTasks.map((task) => {
             const category = categories.find((cat) => cat.id === task.category_id);
+
             return {
                 ...task,
                 categoryName: category ? category.name : 'None',
@@ -76,7 +80,8 @@ const Home = () => {
             };
         });
 
-        if (currentCate != null && categories != null) {
+        // if (currentCate != null && categories != null) {
+        if (currentCate != null && categories != null && Array.isArray(categories)) {
             setCurrentCate((prev) => {
                 if (!prev || !prev.id) return null; // Nếu `prev` hoặc `prev.id` không tồn tại, trả về null.
                 return categories.find((cat) => cat.id === prev.id) || null; // Nếu không tìm thấy, trả về null.
@@ -154,6 +159,11 @@ const Home = () => {
         setListTasks(taskOfUser);
     };
 
+    const handleTaksFillAction = async () => {
+        await fetchListTasks();
+        setActiveToggle(false);
+    };
+
     return (
         <div className="home-container">
             <div className="home-slidebar">
@@ -166,7 +176,8 @@ const Home = () => {
                             name="Task fill"
                             Icon={FaTasks}
                             isActive={activeTaskFill}
-                            action={fetchListTasks}
+                            // action={fetchListTasks}
+                            action={handleTaksFillAction}
                         />
                     </div>
                     <div>
@@ -180,32 +191,42 @@ const Home = () => {
                             setCurrentCate={setCurrentCate}
                             fetchTaskByCate={fetchTaskByCate}
                             handleActiveCategories={handleActiveCate}
+                            activeTogge={activeTogge}
+                            setActiveToggle={setActiveToggle}
                         />
                     </div>
                 </div>
                 <div className="home-slidebar__footer">
-                    <div className="text">Hi {user.username}</div>
+                    <div className="text">Hi {user.username} ...</div>
                     <div className="logout-item" onClick={handleLogout}>
                         <CiLogout className="icon" />
                         <div className="name">Logout</div>
                     </div>
                 </div>
             </div>
+
             <div className="home-content">
-                <div className="home-header">{`All your task ${activeCategories ? 'of ' + currentCate.name : ''}`}</div>
+                <div className="home-header">{`All your task ${
+                    activeCategories ? 'of ' + currentCate?.name : ''
+                }`}</div>
                 {activeTaskFill ? (
                     <div className="home-filterBar">
                         <div className="home-filterBar__title">Tasks</div>
+                        <div className="add-task" onClick={() => setShowAddTask(true)}>
+                            <MdOutlineAddTask className="add-task__icon" />
+                            <p className="add-task__text">Add a task</p>
+                        </div>
                         <div className="home-filterBar__filterField">
-                            <div onClick={handleAll}>
-                                <FilterTag name="All" active={allActive} />
+                            <div onClick={handleNotDone}>
+                                <FilterTag name="Not Done" active={notDoneActive} />
                             </div>
                             <div onClick={handleDone}>
                                 <FilterTag name="Done" active={doneActive} />
                             </div>
-                            <div onClick={handleNotDone}>
-                                <FilterTag name="Not Done" active={notDoneActive} />
+                            <div onClick={handleAll}>
+                                <FilterTag name="All" active={allActive} />
                             </div>
+
                             <div className="icon">
                                 <IoFilter />
                             </div>
@@ -215,7 +236,7 @@ const Home = () => {
                     <></>
                 )}
                 <div className="home-task">
-                    {tasksView.map((task) => (
+                    {tasksView.map((task, index) => (
                         <TaskCard
                             id={task.id}
                             name={task.title}
@@ -228,10 +249,7 @@ const Home = () => {
                             showDeleteTaskModal={handleShowDeleteTask}
                         />
                     ))}
-                    <div className="add-task" onClick={() => setShowAddTask(true)}>
-                        <MdOutlineAddTask className="add-task__icon" />
-                        <p className="add-task__text">Add a task</p>
-                    </div>
+
                     <AddModal
                         show={showAddTask}
                         setShow={setShowAddTask}

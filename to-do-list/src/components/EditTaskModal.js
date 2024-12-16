@@ -11,9 +11,9 @@ const EditTaskModal = ({ show, setShow, task, listCate, fetchListTasks }) => {
         if (task) {
             setTitle(task.title);
             setDescription(task.description);
-            setCategory(task.category_id);
+            setCategory(task.category_id ? task.category_id : listCate[0]?.id);
         }
-    }, [task]);
+    }, [task, listCate]);
 
     const handleSubmitEditTask = async () => {
         const data = {
@@ -21,6 +21,7 @@ const EditTaskModal = ({ show, setShow, task, listCate, fetchListTasks }) => {
             description: description,
             category_id: category,
         };
+        console.log('>>> data', data);
         const res = await taskApi.updateTask(task.id, data);
         console.log(res.data);
         toast.success('Update task successfully');
@@ -32,13 +33,7 @@ const EditTaskModal = ({ show, setShow, task, listCate, fetchListTasks }) => {
     };
     return (
         <>
-            <Modal
-                show={show}
-                onHide={handleCloseEdit}
-                animation={false}
-                size="xl"
-                backdrop="static"
-            >
+            <Modal show={show} onHide={handleCloseEdit} animation={false} size="xl" backdrop="static">
                 <Modal.Header closeButton>
                     <Modal.Title>Add new student</Modal.Title>
                 </Modal.Header>
@@ -80,12 +75,13 @@ const EditTaskModal = ({ show, setShow, task, listCate, fetchListTasks }) => {
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                             >
-                                <option value="">Select category</option>
-                                {listCate.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>
-                                        {cat.name}
-                                    </option>
-                                ))}
+                                {/* <option value="">Select category</option> */}
+                                {Array.isArray(listCate) &&
+                                    listCate.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
                             </select>
                         </div>
                     </form>

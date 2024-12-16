@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaPen } from 'react-icons/fa';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
 import { taskApi } from '../api/api';
-const TaskCard = ({ id, name, description, list, color, done, fetchTasks, showEditTaskModal, showDeleteTaskModal}) => {
+const TaskCard = ({ id, name, description, list, color, done, fetchTasks, showEditTaskModal, showDeleteTaskModal }) => {
     const handleCheck = async () => {
         const res = await taskApi.toggleTaskStatus(id);
         console.log(res.data);
@@ -28,10 +28,14 @@ const TaskCard = ({ id, name, description, list, color, done, fetchTasks, showEd
             </div>
 
             <div className="task-card__content">
-                <h2 className={`task-card__title ${done ? 'task-card__title--done' : ''}`}>{name}</h2>
+                <h2 className={`task-card__title ${done ? 'task-card__title--done' : ''}`}>
+                    {name ? name : '( Không có tiêu đề )'}
+                </h2>
                 <div className="task-card__details">
                     <div className="task-card__description-box">
-                        <p className={`task-card__description ${done ? 'task-card__description--done' : ''}`}>{description}</p>
+                        <p className={`task-card__description ${done ? 'task-card__description--done' : ''}`}>
+                            {description}
+                        </p>
                         {done && <span class="task-card__done-label">✔ DONE</span>}
                     </div>
                     <div className="task-card__info">

@@ -6,7 +6,7 @@ const DeleteTaskModal = ({show, setShow, task, fetchListTasks  }) => {
     const handleCloseDelete = () => {
         setShow(false);
     }
-    const handleSubmitEditTask = async () => {
+    const handleSubmitDeleteTask = async () => {
         const id = task ? task.id : null;
         if (id === null) {
             return;
@@ -37,7 +37,7 @@ const DeleteTaskModal = ({show, setShow, task, fetchListTasks  }) => {
                     <button className="btn btn-secondary" onClick={handleCloseDelete}>
                         Close
                     </button>
-                    <button className="btn btn-primary" onClick={handleSubmitEditTask}>
+                    <button className="btn btn-primary" onClick={handleSubmitDeleteTask}>
                         Delete
                     </button>
                 </Modal.Footer>

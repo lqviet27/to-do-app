@@ -213,16 +213,19 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
-            
+
             .text {
                 font-size: 1.1em;
                 color: #777;
+                text-align: center; /* Đảm bảo căn giữa nếu text dài */
+                line-height: 1.5;
             }
 
             .logout-item {
                 width: 100%;
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 padding: 10px;
                 border-radius: 5px;
                 cursor: pointer;
@@ -235,11 +238,13 @@
                 .icon {
                     margin-right: 8px;
                     font-size: 1.2em;
+                    line-height: 1; 
                 }
 
                 .name {
                     margin: 0;
                     font-size: 1.1em;
+                    line-height: 1;
                 }
             }
         }
@@ -326,7 +331,7 @@
         .home-task {
             width: 100%;
             .task-card {
-                width: 100%;
+                width: 40%;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
