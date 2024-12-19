@@ -12,6 +12,9 @@ const TaskCard = ({
     done,
     fetchTasks,
     handleNotDone,
+    handleDone,
+    handleAll,
+    currentFilter,
     showEditTaskModal,
     showDeleteTaskModal,
 }) => {
@@ -26,6 +29,18 @@ const TaskCard = ({
         const res = await taskApi.toggleTaskStatus(id);
         console.log(res.data);
         handleNotDone();
+        switch (currentFilter) {
+            case 'done':
+                console.log('>>> check done');
+                handleDone();
+                break;
+            case 'all':
+                handleAll();
+                break;
+            default:
+                handleNotDone();
+                break;
+        }
         await fetchTasks();
     };
 

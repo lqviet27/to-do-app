@@ -44,6 +44,7 @@ const Home = () => {
     const [notDoneActive, setNotDoneActive] = useState(true);
     const [allActive, setAllActive] = useState(false);
     const [doneActive, setDoneActive] = useState(false);
+    const [currentFilter, setCurrentFilter] = useState('notDone');
 
     const [showInfo, setShowInfo] = useState(false); // Trạng thái cho Info
     const [activeTogge, setActiveToggle] = useState(false);
@@ -70,9 +71,9 @@ const Home = () => {
         // if (res.ec && res.ec === 1) {
         //     return;
         // }
-    }
+    };
 
-    //! UPLOAD ANH 
+    //! UPLOAD ANH
     const handleImageUpload = (e) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -94,10 +95,9 @@ const Home = () => {
         }
     };
 
-
     const fetchListTasks = async () => {
         await dispatch(fetchTasks(user.id));
-        handleReset();
+        // handleReset();
     };
 
     const fetchListCategories = async () => {
@@ -112,13 +112,14 @@ const Home = () => {
         }
     }, [user]);
 
-    // useEffect(() => {
-    //     setListTasks(Tasks);
-    // }, [Tasks]);
+
     useEffect(() => {
         if (notDoneActive) {
             const notDoneTasks = Tasks.filter((task) => !task.is_done);
             setListTasks(notDoneTasks);
+        } else if (doneActive) {
+            const doneTasks = Tasks.filter((task) => task.is_done);
+            setListTasks(doneTasks);
         } else {
             setListTasks(Tasks);
         }
@@ -179,14 +180,16 @@ const Home = () => {
         setAllActive(true);
         setDoneActive(false);
         setNotDoneActive(false);
+        setCurrentFilter('all');
         setTasksView(Tasks);
     };
 
     const handleDone = () => {
-        console.log('done>>>>>>');
+        console.log('done>>>>>>>');
         setAllActive(false);
         setDoneActive(true);
         setNotDoneActive(false);
+        setCurrentFilter('done');
         const doneTasks = Tasks.filter((task) => task.is_done === true);
         setTasksView(doneTasks);
     };
@@ -195,6 +198,7 @@ const Home = () => {
         setAllActive(false);
         setDoneActive(false);
         setNotDoneActive(true);
+        setCurrentFilter('notDone');
         const notDoneTasks = Tasks.filter((task) => task.is_done === false);
         setTasksView(notDoneTasks);
     };
@@ -354,6 +358,9 @@ const Home = () => {
                                     done={task.is_done}
                                     fetchTasks={fetchListTasks}
                                     handleNotDone={handleNotDone}
+                                    handleDone={handleDone}
+                                    handleAll={handleAll}
+                                    currentFilter={currentFilter}
                                     showEditTaskModal={handleShowEditTask}
                                     showDeleteTaskModal={handleShowDeleteTask}
                                 />
