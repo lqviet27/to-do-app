@@ -21,6 +21,7 @@ import DeleteTaskModal from '../components/DeleteTaskModal';
 import { taskApi } from '../api/api';
 import FilterTag from '../components/FilterTag';
 import { logout } from '../redux/actions/authAction';
+import { userApi } from '../api/api';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -44,7 +45,55 @@ const Home = () => {
     const [allActive, setAllActive] = useState(false);
     const [doneActive, setDoneActive] = useState(false);
 
+    const [showInfo, setShowInfo] = useState(false); // Trạng thái cho Info
     const [activeTogge, setActiveToggle] = useState(false);
+
+    // User info
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+
+    const setInfoUser = () => {
+        setEmail(user.email);
+        setName(user.username);
+        setImageUrl(user.avatar);
+    };
+
+    const handleUpdateUser = async (e) => {
+        e.preventDefault();
+        // const res = await userApi.updateUser(user.id, {
+        //     email,
+        //     username: name,
+        //     avatar: imageUrl,
+        // });
+        // if (res.ec && res.ec === 1) {
+        //     return;
+        // }
+    }
+
+    //! UPLOAD ANH 
+    const handleImageUpload = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            const data = new FormData();
+            data.append('file', file);
+            data.append('upload_preset', 'todo-user');
+            data.append('cloud_name', 'duzqdd0rq');
+            fetch('https://api.cloudinary.com/v1_1/duzqdd0rq/image/upload', {
+                method: 'post',
+                body: data,
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                })
+                .catch((err) => {
+                    console.error('Error uploading image:', err);
+                });
+        }
+    };
+
 
     const fetchListTasks = async () => {
         await dispatch(fetchTasks(user.id));
@@ -59,6 +108,7 @@ const Home = () => {
         if (user) {
             fetchListCategories();
             fetchListTasks();
+            setInfoUser();
         }
     }, [user]);
 
@@ -109,11 +159,20 @@ const Home = () => {
     const handleActiveTaskFill = () => {
         setActiveTaskFill(true);
         setActiveCategories(false);
+        setShowInfo(false);
     };
 
     const handleActiveCate = () => {
         setActiveCategories(true);
         setActiveTaskFill(false);
+        setShowInfo(false);
+    };
+
+    const handleActiveInfo = () => {
+        setShowInfo(true);
+        setActiveTaskFill(false);
+        setActiveCategories(false);
+        setActiveToggle(false);
     };
 
     const handleAll = () => {
@@ -142,11 +201,9 @@ const Home = () => {
 
     const handleReset = () => {
         console.log('reset>>>>>>>');
-        setNotDoneActive(true);
-        setAllActive(false);
-        setDoneActive(false);
-        setActiveTaskFill(true);
-        setActiveCategories(false);
+        handleNotDone();
+        handleActiveTaskFill();
+        // setShowInfo(false);
     };
 
     const handleLogout = () => {
@@ -199,6 +256,9 @@ const Home = () => {
                             setActiveToggle={setActiveToggle}
                         />
                     </div>
+                    <div onClick={handleActiveInfo}>
+                        <SlidebarItem name="Info" Icon={FaTasks} isActive={showInfo} />
+                    </div>
                 </div>
                 <div className="home-slidebar__footer">
                     <div className="text">Hi {user.username} ...</div>
@@ -210,75 +270,119 @@ const Home = () => {
             </div>
 
             <div className="home-content">
-                <div className="home-header">{`All your task ${
-                    activeCategories ? 'of ' + currentCate?.name : ''
-                }`}</div>
-                {activeTaskFill ? (
-                    <div className="home-filterBar">
-                        <div className="home-filterBar__title">
-                            Tasks
-                            <div className="add-task" onClick={() => setShowAddTask(true)}>
-                                <MdOutlineAddTask className="add-task__icon" />
-                                {/* <p className="add-task__text"></p> */}
+                {showInfo ? (
+                    <div className="info-container">
+                        <div className="info-header">Your Profile</div>
+                        <div className="info-content">
+                            <div className="info-left">
+                                <img
+                                    src={imageUrl} // Thay bằng ảnh người dùng
+                                    alt="User Avatar"
+                                    className="user-avatar"
+                                />
+                                <div className="button-group">
+                                    <label htmlFor="upload-image" className="upload-btn">
+                                        Upload Image
+                                    </label>
+                                    <input type="file" id="upload-image" accept="image/*" style={{ display: 'none' }} />
+                                    <button className="change-password-btn">Change Password</button>
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="home-filterBar__filterField">
-                            <div onClick={handleNotDone}>
-                                <FilterTag name="Not Done" active={notDoneActive} />
-                            </div>
-                            <div onClick={handleDone}>
-                                <FilterTag name="Done" active={doneActive} />
-                            </div>
-                            <div onClick={handleAll}>
-                                <FilterTag name="All" active={allActive} />
-                            </div>
-
-                            <div className="icon">
-                                <IoFilter />
+                            <div className="info-right">
+                                <form className="info-form" onSubmit={handleUpdateUser}>
+                                    <div className="form-group">
+                                        <label>Username</label>
+                                        <input type="text" defaultValue={name} className="form-control" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Email</label>
+                                        <input type="email" defaultValue={email} className="form-control" />
+                                    </div>
+                                    {/* <div className="form-group">
+                                        <label>Phone</label>
+                                        <input type="text" defaultValue={user.phone || ''} className="form-control" />
+                                    </div> */}
+                                    <button type="submit" className="save-btn">
+                                        Save
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 ) : (
-                    <></>
+                    <>
+                        <div className="home-header">{`All your task ${
+                            activeCategories ? 'of ' + currentCate?.name : ''
+                        }`}</div>
+                        {activeTaskFill ? (
+                            <div className="home-filterBar">
+                                <div className="home-filterBar__title">
+                                    Tasks
+                                    <div className="add-task" onClick={() => setShowAddTask(true)}>
+                                        <MdOutlineAddTask className="add-task__icon" />
+                                        {/* <p className="add-task__text"></p> */}
+                                    </div>
+                                </div>
+
+                                <div className="home-filterBar__filterField">
+                                    <div onClick={handleNotDone}>
+                                        <FilterTag name="Not Done" active={notDoneActive} />
+                                    </div>
+                                    <div onClick={handleDone}>
+                                        <FilterTag name="Done" active={doneActive} />
+                                    </div>
+                                    <div onClick={handleAll}>
+                                        <FilterTag name="All" active={allActive} />
+                                    </div>
+
+                                    <div className="icon">
+                                        <IoFilter />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <></>
+                        )}
+                        <div className="home-task">
+                            {tasksView.map((task, index) => (
+                                <TaskCard
+                                    id={task.id}
+                                    name={task.title}
+                                    description={task.description}
+                                    list={task.categoryName}
+                                    color={task.categoryColor}
+                                    done={task.is_done}
+                                    fetchTasks={fetchListTasks}
+                                    handleNotDone={handleNotDone}
+                                    showEditTaskModal={handleShowEditTask}
+                                    showDeleteTaskModal={handleShowDeleteTask}
+                                />
+                            ))}
+
+                            <AddModal
+                                show={showAddTask}
+                                setShow={setShowAddTask}
+                                listCate={categories}
+                                fetchListTasks={fetchListTasks}
+                            />
+
+                            <EditTaskModal
+                                show={showEditTask}
+                                setShow={setShowEditTask}
+                                task={currentTask}
+                                listCate={categories}
+                                fetchListTasks={fetchListTasks}
+                            />
+
+                            <DeleteTaskModal
+                                show={showDeleteTask}
+                                setShow={setShowDeleteTask}
+                                task={currentTask}
+                                fetchListTasks={fetchListTasks}
+                            />
+                        </div>
+                    </>
                 )}
-                <div className="home-task">
-                    {tasksView.map((task, index) => (
-                        <TaskCard
-                            id={task.id}
-                            name={task.title}
-                            description={task.description}
-                            list={task.categoryName}
-                            color={task.categoryColor}
-                            done={task.is_done}
-                            fetchTasks={fetchListTasks}
-                            showEditTaskModal={handleShowEditTask}
-                            showDeleteTaskModal={handleShowDeleteTask}
-                        />
-                    ))}
-
-                    <AddModal
-                        show={showAddTask}
-                        setShow={setShowAddTask}
-                        listCate={categories}
-                        fetchListTasks={fetchListTasks}
-                    />
-
-                    <EditTaskModal
-                        show={showEditTask}
-                        setShow={setShowEditTask}
-                        task={currentTask}
-                        listCate={categories}
-                        fetchListTasks={fetchListTasks}
-                    />
-
-                    <DeleteTaskModal
-                        show={showDeleteTask}
-                        setShow={setShowDeleteTask}
-                        task={currentTask}
-                        fetchListTasks={fetchListTasks}
-                    />
-                </div>
             </div>
         </div>
     );
