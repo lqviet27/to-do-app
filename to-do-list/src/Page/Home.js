@@ -5,6 +5,7 @@ import './Home.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTasks } from '../redux/actions/taskAction';
 import { fetchCategories } from '../redux/actions/categoryAction';
+import { setUser } from '../redux/actions/authAction';
 import { useEffect } from 'react';
 import TaskLogo from '../assets/img/to-do-list.png';
 import SlidebarItem from '../components/SlideBar/SlidebarItem';
@@ -22,6 +23,7 @@ import { taskApi } from '../api/api';
 import FilterTag from '../components/FilterTag';
 import { logout } from '../redux/actions/authAction';
 import { userApi } from '../api/api';
+import { toast } from 'react-toastify';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -54,32 +56,45 @@ const Home = () => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [imageView, setImageView] = useState('');
 
     const setInfoUser = () => {
         setEmail(user.email);
         setName(user.username);
         setImageUrl(user.avatar);
+        setImageView(user.avatar);
     };
 
-    const handleUpdateUser = async (e) => {
-        e.preventDefault();
-        // const res = await userApi.updateUser(user.id, {
-        //     email,
-        //     username: name,
-        //     avatar: imageUrl,
-        // });
-        // if (res.ec && res.ec === 1) {
-        //     return;
-        // }
+    const handleUpdateUser = async (newAvatarUrl) => {
+        const data = {
+            email: email,
+            username: name,
+            avatar: newAvatarUrl || imageUrl,
+        };
+        console.log(data);
+        try {
+            const res = await userApi.updateUser(user.id, data);
+            if (res.status === 200) {
+                toast.success('Update user success');
+            }
+            console.log(res.data);
+            dispatch(setUser(res.data));
+        } catch (error) {
+            console.log(error);
+            toast.error('Update user failed');
+        }
+
     };
 
     //! UPLOAD ANH
     const handleImageUpload = (e) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+            setImageView(URL.createObjectURL(file));
             const data = new FormData();
+            console.log(file);
             data.append('file', file);
-            data.append('upload_preset', 'todo-user');
+            data.append('upload_preset', 'todoapp');
             data.append('cloud_name', 'duzqdd0rq');
             fetch('https://api.cloudinary.com/v1_1/duzqdd0rq/image/upload', {
                 method: 'post',
@@ -87,7 +102,9 @@ const Home = () => {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
+                    console.log(data.url);
+                    setImageUrl(data.url.toString());
+                    handleUpdateUser(data.url.toString());
                 })
                 .catch((err) => {
                     console.error('Error uploading image:', err);
@@ -111,7 +128,6 @@ const Home = () => {
             setInfoUser();
         }
     }, [user]);
-
 
     useEffect(() => {
         if (notDoneActive) {
@@ -280,7 +296,7 @@ const Home = () => {
                         <div className="info-content">
                             <div className="info-left">
                                 <img
-                                    src={imageUrl} // Thay bằng ảnh người dùng
+                                    src={imageView} // Thay bằng ảnh người dùng
                                     alt="User Avatar"
                                     className="user-avatar"
                                 />
@@ -288,7 +304,7 @@ const Home = () => {
                                     <label htmlFor="upload-image" className="upload-btn">
                                         Upload Image
                                     </label>
-                                    <input type="file" id="upload-image" accept="image/*" style={{ display: 'none' }} />
+                                    <input type="file" id="upload-image" accept="image/*" style={{ display: 'none' }} onChange={e => {handleImageUpload(e)}}/>
                                     <button className="change-password-btn">Change Password</button>
                                 </div>
                             </div>
@@ -296,11 +312,21 @@ const Home = () => {
                                 <form className="info-form" onSubmit={handleUpdateUser}>
                                     <div className="form-group">
                                         <label>Username</label>
-                                        <input type="text" defaultValue={name} className="form-control" />
+                                        <input
+                                            type="text"
+                                            defaultValue={name}
+                                            className="form-control"
+                                            onChange={(e) => setName(e.target.value)}
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <label>Email</label>
-                                        <input type="email" defaultValue={email} className="form-control" />
+                                        <input
+                                            type="email"
+                                            defaultValue={email}
+                                            className="form-control"
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
                                     </div>
                                     {/* <div className="form-group">
                                         <label>Phone</label>
