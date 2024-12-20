@@ -10,6 +10,7 @@ class User(db.Model):
     username = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    avatar = db.Column(db.String(256), nullable=True)
     tasks = db.relationship('Task', backref='user', lazy=True)
     categories = db.relationship('Category', backref='user', lazy=True)
 
@@ -28,6 +29,7 @@ class User(db.Model):
             'id': self.id,
             'username': self.username,
             'email': self.email,
+            'avatar': self.avatar,
         }
 
 class Category(db.Model):

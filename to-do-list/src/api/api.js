@@ -29,3 +29,9 @@ export const categoryApi = {
     updateCategory: (cateId, data) => api.put(`/categories/update/${cateId}`, data),
     deleteCategory: (cateId) => api.delete(`/categories/delete/${cateId}`),
 }
+
+export const userApi = {
+    updateUser: (userId, data) => api.put(`/users/update/${userId}`, data),
+    changePassword: (userId, data) => api.put(`/users/cp/${userId}`, data),
+    resetPassword: (userId) => api.put(`/users/rp/${userId}`),
+}

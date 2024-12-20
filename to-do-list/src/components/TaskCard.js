@@ -3,7 +3,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaPen } from 'react-icons/fa';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
 import { taskApi } from '../api/api';
-const TaskCard = ({ id, name, description, list, color, done, fetchTasks, showEditTaskModal, showDeleteTaskModal }) => {
+const TaskCard = ({
+    id,
+    name,
+    description,
+    list,
+    color,
+    done,
+    fetchTasks,
+    handleNotDone,
+    handleDone,
+    handleAll,
+    currentFilter,
+    showEditTaskModal,
+    showDeleteTaskModal,
+}) => {
     const [expanded, setExpanded] = useState(false);
 
     const toggleExpand = () => {
@@ -14,6 +28,19 @@ const TaskCard = ({ id, name, description, list, color, done, fetchTasks, showEd
         event.stopPropagation(); // Ngăn sự kiện lan truyền
         const res = await taskApi.toggleTaskStatus(id);
         console.log(res.data);
+        handleNotDone();
+        switch (currentFilter) {
+            case 'done':
+                console.log('>>> check done');
+                handleDone();
+                break;
+            case 'all':
+                handleAll();
+                break;
+            default:
+                handleNotDone();
+                break;
+        }
         await fetchTasks();
     };
 
