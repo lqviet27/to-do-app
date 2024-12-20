@@ -33,4 +33,5 @@ export const categoryApi = {
 export const userApi = {
     updateUser: (userId, data) => api.put(`/users/update/${userId}`, data),
     changePassword: (userId, data) => api.put(`/users/cp/${userId}`, data),
+    resetPassword: (userId) => api.put(`/users/rp/${userId}`),
 }

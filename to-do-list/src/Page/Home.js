@@ -12,7 +12,7 @@ import SlidebarItem from '../components/SlideBar/SlidebarItem';
 import ExpandSidebarItem from '../components/SlideBar/ExpandSlidebarItem';
 import { FaTasks } from 'react-icons/fa';
 import { TbCategoryFilled } from 'react-icons/tb';
-import { IoSettingsSharp } from 'react-icons/io5';
+import { SlInfo } from "react-icons/sl";
 import { IoFilter } from 'react-icons/io5';
 import { CiLogout } from 'react-icons/ci';
 import { MdOutlineAddTask } from 'react-icons/md';
@@ -24,6 +24,7 @@ import FilterTag from '../components/FilterTag';
 import { logout } from '../redux/actions/authAction';
 import { userApi } from '../api/api';
 import { toast } from 'react-toastify';
+import ChangePassModal from '../components/ChangePassModal';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -54,9 +55,9 @@ const Home = () => {
     // User info
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
     const [imageUrl, setImageUrl] = useState('');
     const [imageView, setImageView] = useState('');
+    const [showChangePass, setShowChangePass] = useState(false);
 
     const setInfoUser = () => {
         setEmail(user.email);
@@ -83,7 +84,11 @@ const Home = () => {
             console.log(error);
             toast.error('Update user failed');
         }
+    };
 
+    const handleShowChangePass = () => {
+        console.log('show change pass');
+        setShowChangePass(true);
     };
 
     //! UPLOAD ANH
@@ -277,7 +282,7 @@ const Home = () => {
                         />
                     </div>
                     <div onClick={handleActiveInfo}>
-                        <SlidebarItem name="Info" Icon={FaTasks} isActive={showInfo} />
+                        <SlidebarItem name="Info" Icon={SlInfo} isActive={showInfo} />
                     </div>
                 </div>
                 <div className="home-slidebar__footer">
@@ -296,7 +301,7 @@ const Home = () => {
                         <div className="info-content">
                             <div className="info-left">
                                 <img
-                                    src={imageView} // Thay bằng ảnh người dùng
+                                    src={imageView} 
                                     alt="User Avatar"
                                     className="user-avatar"
                                 />
@@ -304,8 +309,18 @@ const Home = () => {
                                     <label htmlFor="upload-image" className="upload-btn">
                                         Upload Image
                                     </label>
-                                    <input type="file" id="upload-image" accept="image/*" style={{ display: 'none' }} onChange={e => {handleImageUpload(e)}}/>
-                                    <button className="change-password-btn">Change Password</button>
+                                    <input
+                                        type="file"
+                                        id="upload-image"
+                                        accept="image/*"
+                                        style={{ display: 'none' }}
+                                        onChange={(e) => {
+                                            handleImageUpload(e);
+                                        }}
+                                    />
+                                    <button className="change-password-btn" onClick={handleShowChangePass}>
+                                        Change Password
+                                    </button>
                                 </div>
                             </div>
                             <div className="info-right">
@@ -328,16 +343,14 @@ const Home = () => {
                                             onChange={(e) => setEmail(e.target.value)}
                                         />
                                     </div>
-                                    {/* <div className="form-group">
-                                        <label>Phone</label>
-                                        <input type="text" defaultValue={user.phone || ''} className="form-control" />
-                                    </div> */}
+                                    
                                     <button type="submit" className="save-btn">
                                         Save
                                     </button>
                                 </form>
                             </div>
                         </div>
+                        <ChangePassModal show={showChangePass} setShow={setShowChangePass} />
                     </div>
                 ) : (
                     <>
