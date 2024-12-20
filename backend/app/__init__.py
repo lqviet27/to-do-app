@@ -8,6 +8,7 @@ from app.extensions import db, migrate
 from .auth import auth_bp
 from .tasks import task_bp
 from .categories import categories_bp
+from .users import user_bp
 from flask_cors import CORS
 def create_app():
     app = Flask(__name__)
@@ -21,6 +22,7 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(task_bp, url_prefix='/tasks')
     app.register_blueprint(categories_bp, url_prefix='/categories')
+    app.register_blueprint(user_bp, url_prefix='/users')
 
     return app
 

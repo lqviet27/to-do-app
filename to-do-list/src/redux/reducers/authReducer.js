@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGOUT } from '../actions/authAction';
+import { LOGIN_SUCCESS, LOGOUT, SETUSER } from '../actions/authAction';
 
 const initialState = {
     user: JSON.parse(localStorage.getItem('user')) || null,
@@ -17,7 +17,14 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: null,
-                isAuthenticated: false
+                isAuthenticated: false,
+            };
+        case SETUSER:
+            localStorage.setItem('user', JSON.stringify(action.payload));
+            return {
+                ...state,
+                user: action.payload,
+                isAuthenticated: true,
             };
         default:
             return state;
